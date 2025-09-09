@@ -1,70 +1,5 @@
 import { state, dom, on } from './main.js';
 
-// Silo level logic
-const siloY = 80;
-const siloHeight = 200;
-function getFillColor(level) {
-    if (level < 30) return "#ff7675";
-    if (level < 60) return "#ffe066";
-    return "#51cf66";
-}
-function updateSiloLevel() {
-    let level = parseInt(dom.levelInput.value, 10);
-    if (isNaN(level) || level < 0) level = 0;
-    if (level > 100) level = 100;
-    const fillHeight = siloHeight * (level / 100);
-    const fillY = siloY + siloHeight - fillHeight;
-    dom.siloLevelFill.setAttribute('y', fillY);
-    dom.siloLevelFill.setAttribute('height', fillHeight);
-    dom.siloLevelFill.setAttribute('fill', getFillColor(level));
-    dom.siloLevelText.textContent = level + "%";
-    dom.siloLevelText.setAttribute('y', fillY + fillHeight / 2);
-}
-dom.levelInput.addEventListener('input', updateSiloLevel);
-updateSiloLevel();
-
-// Tooltip logic for pipe and bag labels
-function showTooltip(evt, desc) {
-    dom.tooltip.textContent = desc;
-    dom.tooltip.style.opacity = 1;
-    dom.tooltip.style.left = (evt.clientX + 10) + 'px';
-    dom.tooltip.style.top = (evt.clientY - 10) + 'px';
-}
-function hideTooltip() {
-    dom.tooltip.style.opacity = 0;
-}
-document.querySelectorAll('.pipe-label, .bag-label').forEach(label => {
-    label.addEventListener('mouseenter', function(evt) {
-        showTooltip(evt, this.getAttribute('data-desc'));
-    });
-    label.addEventListener('mousemove', function(evt) {
-        showTooltip(evt, this.getAttribute('data-desc'));
-    });
-    label.addEventListener('mouseleave', hideTooltip);
-});
-
-// Custom tooltip for alarm boxes
-function showAlarmTooltip(evt, text) {
-    if (!text) return;
-    dom.tooltip.textContent = text;
-    dom.tooltip.style.opacity = 1;
-    dom.tooltip.style.left = (evt.clientX + 10) + 'px';
-    dom.tooltip.style.top = (evt.clientY - 10) + 'px';
-}
-function hideAlarmTooltip() {
-    dom.tooltip.style.opacity = 0;
-}
-[dom.alarmBag1, dom.alarmBag2].forEach(alarm => {
-    alarm.addEventListener('mouseenter', function(evt) {
-        if (this.title) showAlarmTooltip(evt, this.title);
-    });
-    alarm.addEventListener('mousemove', function(evt) {
-        if (this.title) showAlarmTooltip(evt, this.title);
-    });
-    alarm.addEventListener('mouseleave', hideAlarmTooltip);
-});
-
-// Bag logic
 let bag1Interval = null;
 let bag2Interval = null;
 
@@ -152,26 +87,8 @@ dom.changeBag2Btn.addEventListener('click', function() {
     }
 });
 
-// Flow display logic
-function setFlowValues(active) {
-    if (active) {
-        dom.flowValue1.textContent = "2.5 t/h";
-        dom.flowValue2.textContent = "2.2 t/h";
-    } else {
-        dom.flowValue1.textContent = "Flow";
-        dom.flowValue2.textContent = "Flow";
-    }
-}
-
 // Listen for start/stop events from main.js
-on('start', () => {
-    setFlowValues(true);
-    animateBagFill();
-});
-on('stop', () => {
-    setFlowValues(false);
-    stopBagFill();
-});
+on('start', animateBagFill);
+on('stop', stopBagFill);
 
-setFlowValues(false);
-updateBagDisplay();
+//

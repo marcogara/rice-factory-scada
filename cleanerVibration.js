@@ -1,11 +1,11 @@
-// Cleaner vibration simulation logic with its own listener
+import { dom, on } from './main.js';
 
 let vibrationInterval = null;
 let vibrationActive = false;
 let vibrationStep = 0;
 
 function startCleanerVibration() {
-    const cleaner = document.querySelector('#cleanerRect');
+    const cleaner = dom.cleanerRect;
     if (vibrationActive || !cleaner) return;
     vibrationActive = true;
     vibrationStep = 0;
@@ -18,7 +18,7 @@ function startCleanerVibration() {
 }
 
 function stopCleanerVibration() {
-    const cleaner = document.querySelector('#cleanerRect');
+    const cleaner = dom.cleanerRect;
     if (!vibrationActive || !cleaner) return;
     clearInterval(vibrationInterval);
     cleaner.setAttribute('y', 140); // Reset to original position
@@ -38,3 +38,6 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+on('start', startCleanerVibration);
+on('stop', stopCleanerVibration);
