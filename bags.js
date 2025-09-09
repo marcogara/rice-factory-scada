@@ -87,8 +87,30 @@ dom.changeBag2Btn.addEventListener('click', function() {
     }
 });
 
+// Tooltip logic for alarm boxes (custom tooltip)
+function showAlarmTooltip(evt, text) {
+    if (!text) return;
+    dom.tooltip.textContent = text;
+    dom.tooltip.style.opacity = 1;
+    dom.tooltip.style.left = (evt.clientX + 10) + 'px';
+    dom.tooltip.style.top = (evt.clientY - 10) + 'px';
+}
+function hideAlarmTooltip() {
+    dom.tooltip.style.opacity = 0;
+}
+[dom.alarmBag1, dom.alarmBag2].forEach(alarm => {
+    alarm.addEventListener('mouseenter', function(evt) {
+        if (this.title) showAlarmTooltip(evt, this.title);
+    });
+    alarm.addEventListener('mousemove', function(evt) {
+        if (this.title) showAlarmTooltip(evt, this.title);
+    });
+    alarm.addEventListener('mouseleave', hideAlarmTooltip);
+});
+
 // Listen for start/stop events from main.js
 on('start', animateBagFill);
 on('stop', stopBagFill);
 
-//
+// Initial display
+updateBagDisplay();
