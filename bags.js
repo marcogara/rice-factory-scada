@@ -4,6 +4,7 @@ let bag2Level = 0;
 let bag1Interval = null;
 let bag2Interval = null;
 
+// Start/Stop button logic bag fill animation
 const bag1Fill = document.getElementById('bag1Fill');
 const bag2Fill = document.getElementById('bag2Fill');
 const bag1LevelText = document.getElementById('bag1-level');
