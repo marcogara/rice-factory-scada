@@ -1,30 +1,56 @@
+// Custom tooltip for alarm boxes
+const alarmBag1 = document.getElementById('alarmBag1');
+const alarmBag2 = document.getElementById('alarmBag2');
+
+function showAlarmTooltip(evt, text) {
+    if (!text) return;
+    tooltip.textContent = text;
+    tooltip.style.opacity = 1;
+    tooltip.style.left = (evt.clientX + 10) + 'px';
+    tooltip.style.top = (evt.clientY - 10) + 'px';
+}
+function hideAlarmTooltip() {
+    tooltip.style.opacity = 0;
+}
+
+[alarmBag1, alarmBag2].forEach(alarm => {
+    alarm.addEventListener('mouseenter', function(evt) {
+        if (this.title) showAlarmTooltip(evt, this.title);
+    });
+    alarm.addEventListener('mousemove', function(evt) {
+        if (this.title) showAlarmTooltip(evt, this.title);
+    });
+    alarm.addEventListener('mouseleave', hideAlarmTooltip);
+});
+
+// Start/Stop button logic and bag fill animation
+const startBtn = document.getElementById('startBtn');
+const bag1Fill = document.getElementById('bag1Fill');
+const bag2Fill = document.getElementById('bag2Fill');
+const bag1LevelText = document.getElementById('bag1-level');
+const bag2LevelText = document.getElementById('bag2-level');
+const changeBag1Btn = document.getElementById('changeBag1Btn');
+const changeBag2Btn = document.getElementById('changeBag2Btn');
+
 let running = false;
 let bag1Level = 0;
 let bag2Level = 0;
 let bag1Interval = null;
 let bag2Interval = null;
 
-// Start/Stop button logic bag fill animation
-const bag1Fill = document.getElementById('bag1Fill');
-const bag2Fill = document.getElementById('bag2Fill');
-const bag1LevelText = document.getElementById('bag1-level');
-const bag2LevelText = document.getElementById('bag2-level');
-const alarmBag1 = document.getElementById('alarmBag1');
-const alarmBag2 = document.getElementById('alarmBag2');
-const changeBag1Btn = document.getElementById('changeBag1Btn');
-const changeBag2Btn = document.getElementById('changeBag2Btn');
-
 function updateBagDisplay() {
+    // Bag 1
     bag1Fill.setAttribute('y', 400 - bag1Level);
     bag1Fill.setAttribute('height', bag1Level);
     let percent1 = Math.round((bag1Level / 60) * 100);
     bag1LevelText.textContent = percent1 + "%";
+    // Bag 2
     bag2Fill.setAttribute('y', 440 - bag2Level);
     bag2Fill.setAttribute('height', bag2Level);
     let percent2 = Math.round((bag2Level / 60) * 100);
     bag2LevelText.textContent = percent2 + "%";
 
-    // Alarm logic
+    // Alarm logic: if over 80% show alarm, if over 100% show "over" alarm
     if (percent1 >= 100) {
         alarmBag1.textContent = "BAG-003";
         alarmBag1.classList.add("active");
@@ -60,19 +86,26 @@ function updateBagDisplay() {
 }
 
 function animateBagFill() {
-    // Prevent multiple intervals
-    stopBagFill();
+    // Bag 1 (OUT-003): slow fill
+    bag1Level = 0;
+    bag1Fill.setAttribute('y', 400);
+    bag1Fill.setAttribute('height', 0);
+    // Bag 2 (OUT-004): slow fill
+    bag2Level = 0;
+    bag2Fill.setAttribute('y', 440);
+    bag2Fill.setAttribute('height', 0);
+    updateBagDisplay();
     bag1Interval = setInterval(() => {
         if (!running) return;
         if (bag1Level < 60) {
-            bag1Level += 0.1;
+            bag1Level += 0.3; // very slow
             updateBagDisplay();
         }
     }, 100);
     bag2Interval = setInterval(() => {
         if (!running) return;
         if (bag2Level < 60) {
-            bag2Level += 0.1;
+            bag2Level += 0.1; // very slow
             updateBagDisplay();
         }
     }, 100);
@@ -81,37 +114,30 @@ function animateBagFill() {
 function stopBagFill() {
     clearInterval(bag1Interval);
     clearInterval(bag2Interval);
-    bag1Interval = null;
-    bag2Interval = null;
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    const startBtn = document.getElementById('startBtn');
-    const changeBag1Btn = document.getElementById('changeBag1Btn');
-    const changeBag2Btn = document.getElementById('changeBag2Btn');
-    if (!startBtn) return;
+startBtn.addEventListener('click', function() {
+    running = !running;
 
-    startBtn.addEventListener('click', () => {
-  
-        if (startBtn.classList.contains('running')) {
-            animateBagFill();
-        } else {
-            stopBagFill();
-        }
-    });
-
-    changeBag1Btn.addEventListener('click', function() {
-        if (!this.disabled) {
-            bag1Level = 0;
-            updateBagDisplay();
-        }
-    });
-    changeBag2Btn.addEventListener('click', function() {
-        if (!this.disabled) {
-            bag2Level = 0;
-            updateBagDisplay();
-        }
-    });
-
-    updateBagDisplay();
+    if (running) {
+        startBtn.textContent = "Stop";
+        startBtn.classList.add("running");
+        animateBagFill();
+    } else {
+        startBtn.textContent = "Start";
+        startBtn.classList.remove("running");
+        stopBagFill();
+    }
+});
+changeBag1Btn.addEventListener('click', function() {
+    if (!this.disabled) {
+        bag1Level = 0;
+        updateBagDisplay();
+    }
+});
+changeBag2Btn.addEventListener('click', function() {
+    if (!this.disabled) {
+        bag2Level = 0;
+        updateBagDisplay();
+    }
 });

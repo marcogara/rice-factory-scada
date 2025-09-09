@@ -26,7 +26,7 @@ function updateSiloLevel() {
 levelInput.addEventListener('input', updateSiloLevel);
 updateSiloLevel();
 
-// Tooltip logic for pipe and bag labels
+// Tooltip logic for pipe
 const tooltip = document.getElementById('tooltip');
 function showTooltip(evt, desc) {
     tooltip.textContent = desc;
@@ -47,6 +47,31 @@ document.querySelectorAll('.pipe-label, .bag-label').forEach(label => {
     label.addEventListener('mouseleave', hideTooltip);
 });
 
+// Custom tooltip for alarm boxes
+const alarmBag1 = document.getElementById('alarmBag1');
+const alarmBag2 = document.getElementById('alarmBag2');
+
+function showAlarmTooltip(evt, text) {
+    if (!text) return;
+    tooltip.textContent = text;
+    tooltip.style.opacity = 1;
+    tooltip.style.left = (evt.clientX + 10) + 'px';
+    tooltip.style.top = (evt.clientY - 10) + 'px';
+}
+function hideAlarmTooltip() {
+    tooltip.style.opacity = 0;
+}
+
+[alarmBag1, alarmBag2].forEach(alarm => {
+    alarm.addEventListener('mouseenter', function(evt) {
+        if (this.title) showAlarmTooltip(evt, this.title);
+    });
+    alarm.addEventListener('mousemove', function(evt) {
+        if (this.title) showAlarmTooltip(evt, this.title);
+    });
+    alarm.addEventListener('mouseleave', hideAlarmTooltip);
+});
+
 // Start/Stop button logic and bag fill animation
 const startBtn = document.getElementById('startBtn');
 const flowValue1 = document.getElementById('flowValue1');
@@ -55,8 +80,6 @@ const bag1Fill = document.getElementById('bag1Fill');
 const bag2Fill = document.getElementById('bag2Fill');
 const bag1LevelText = document.getElementById('bag1-level');
 const bag2LevelText = document.getElementById('bag2-level');
-const alarmBag1 = document.getElementById('alarmBag1');
-const alarmBag2 = document.getElementById('alarmBag2');
 const changeBag1Btn = document.getElementById('changeBag1Btn');
 const changeBag2Btn = document.getElementById('changeBag2Btn');
 
