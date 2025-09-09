@@ -23,7 +23,7 @@ function updateSiloLevel() {
 dom.levelInput.addEventListener('input', updateSiloLevel);
 updateSiloLevel();
 
-// Tooltip logic for pipe and bag labels
+// Tooltip logic for pipe
 function showTooltip(evt, desc) {
     dom.tooltip.textContent = desc;
     dom.tooltip.style.opacity = 1;
@@ -33,7 +33,7 @@ function showTooltip(evt, desc) {
 function hideTooltip() {
     dom.tooltip.style.opacity = 0;
 }
-document.querySelectorAll('.pipe-label, .bag-label').forEach(label => {
+document.querySelectorAll('.pipe-label').forEach(label => {
     label.addEventListener('mouseenter', function(evt) {
         showTooltip(evt, this.getAttribute('data-desc'));
     });
