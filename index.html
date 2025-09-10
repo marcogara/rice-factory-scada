@@ -124,23 +124,25 @@
             <rect id="siloLevelFill" x="70" y="120" width="120" height="160" fill="#ffe066" clip-path="url(#silo-clip)"/>
             <!-- Level text (dynamic) -->
             <text id="siloLevelText" x="130" y="210" text-anchor="middle" font-size="14" fill="#333" font-weight="bold">80%</text>
-            
+
             <!-- Silo Input Pipe -->
             <image href="IN-001.svg" x="-40" y="-20" width="400" height="440"/>
+
             <!-- Input label with code and tooltip (near the start of the pipe) -->
-            <text class="pipe-label" id="input-pipe-label" x="60" y="15" text-anchor="middle" data-desc="Rice paddy input from storage truck">IN-001</text>
+            <text class="pipe-label" id="input-pipe-label" x="25" y="15" text-anchor="middle" data-desc="Rice paddy input from storage truck">IN-001</text>
+
             <!-- Input label with code and tooltip -->
-            <text class="pipe-label" id="input-pipe-label" x="60" y="300" text-anchor="middle" data-desc="Rice paddy input from storage truck">IN-001</text>
+            <text class="pipe-label" id="input-pipe-label" x="25" y="300" text-anchor="middle" data-desc="Rice paddy input from storage truck">IN-001</text>
             
             <!-- Pipe from Silo to Cleaner -->
-            <image href="TR-002.svg" x="-60" y="-25" width="415" height="440"/>
+             <image href="TR-002.svg" x="40" y="-20" width="400" height="440"/>
     
             <!-- Pipe label with code and tooltip -->
-            <text class="pipe-label" id="transfer-pipe-label" x="250" y="180" text-anchor="middle" data-desc="Transfer pipe from silo to cleaner">TR-002</text>
+            <text class="pipe-label" id="transfer-pipe-label" x="255" y="210" text-anchor="middle" data-desc="Transfer pipe from silo to cleaner">TR-002</text>
             
-            <!-- Flow Reader -->
-            <rect x="230" y="130" width="50" height="28" rx="8" fill="#fff" stroke="#0074D9" stroke-width="3"/>
-            <text id="flowValueTR-002" x="255" y="148" text-anchor="middle" font-size="12" fill="#0074D9">Flow</text>
+            <!-- Flow Reader (outside the pipe, above) -->
+            <rect x="250" y="130" width="50" height="28" rx="8" fill="#fff" stroke="#0074D9" stroke-width="3"/>
+            <text id="flowValueTR-002" x="275" y="148" text-anchor="middle" font-size="12" fill="#0074D9">Flow</text>
             
             <!-- Cleaner -->
             <rect id="cleanerRect" x="350" y="140" width="120" height="80" rx="15" fill="#98fb98" stroke="#333" stroke-width="2"/>
